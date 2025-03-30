@@ -58,5 +58,28 @@ namespace Store_CRUD_MVC.Controllers
             context.SaveChanges();
             return RedirectToAction("Index", "Products");
         }
+
+
+        public IActionResult Edit(int id)
+        {
+            var product = context.Products.Find(id);
+            if (product == null)
+            {
+                return RedirectToAction("Index", "Products");
+            }
+            var productDto = new ProductDto
+            {
+                Name = product.Name,
+                Brand = product.Brand,
+                Category = product.Category,
+                Price = product.Price,
+                Description = product.Description,
+            };
+            ViewData["ProductId"] = product.Id;
+            ViewData["ImageFileName"] = product.ImageFileName;
+            ViewData["CreatedAt"] = product.CreatedAt.ToString("MM/dd/yyyy");
+
+            return View(productDto);
+        }
     }
 }
