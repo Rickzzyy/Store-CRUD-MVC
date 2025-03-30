@@ -16,7 +16,7 @@ namespace Store_CRUD_MVC.Controllers
         }
         public IActionResult Index()
         {
-            var products = context.Products.OrderByDescending(p=> p.Id).ToList();
+            var products = context.Products.OrderByDescending(p => p.Id).ToList();
             return View(products);
         }
 
@@ -27,11 +27,11 @@ namespace Store_CRUD_MVC.Controllers
         [HttpPost]
         public IActionResult Create(ProductDto productDto)
         {
-            if(productDto.ImageFile == null)
+            if (productDto.ImageFile == null)
             {
                 ModelState.AddModelError("ImageFile", "The Image is required");
             }
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(productDto);
             }
@@ -80,6 +80,48 @@ namespace Store_CRUD_MVC.Controllers
             ViewData["CreatedAt"] = product.CreatedAt.ToString("MM/dd/yyyy");
 
             return View(productDto);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, ProductDto productDto)
+        {
+            var product = context.Products.Find(id);
+            if (product == null)
+            {
+                return RedirectToAction("Index", "Products");
+            }
+            if (!ModelState.IsValid)
+            {
+                ViewData["ProductId"] = product.Id;
+                ViewData["ImageFileName"] = product.ImageFileName;
+                ViewData["CreatedAt"] = product.CreatedAt.ToString("MM/dd/yyyy");
+
+                return View(productDto);
+            }
+
+            string newFileName = product.ImageFileName;
+            if (productDto.ImageFile != null)
+            {
+                newFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + Path.GetExtension(productDto.ImageFile.FileName);
+                string imageFullPath = enviroment.WebRootPath + "/products/" + newFileName;
+                using (var stream = System.IO.File.Create(imageFullPath))
+                {
+                    productDto.ImageFile.CopyTo(stream);
+                }
+
+                string oldImagePath = enviroment.WebRootPath + "/products/" + product.ImageFileName;
+                System.IO.File.Delete(oldImagePath);
+            }
+
+            product.Name = productDto.Name;
+            product.Brand = productDto.Brand;
+            product.Category = productDto.Category;
+            product.Price = productDto.Price;
+            product.Description = productDto.Description;
+            product.ImageFileName = newFileName;
+
+            context.SaveChanges();
+            return RedirectToAction("Index", "Products");
         }
     }
 }
