@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Store_CRUD_MVC.Models;
 
 namespace Store_CRUD_MVC.Services
 {
@@ -7,6 +8,6 @@ namespace Store_CRUD_MVC.Services
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-        
+        public DbSet<Product> Products { get; set; }
     }
 }

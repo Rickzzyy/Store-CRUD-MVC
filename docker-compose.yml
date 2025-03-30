@@ -8,7 +8,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - ConnectionStrings__DefaultConnection=Server=sql-server;Database=StoreDb;User ID=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=localhost,1433;Database=StoreDb;User ID=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
     ports:
       - "4000:8080"
       - "4001:8081"
