@@ -7,6 +7,7 @@
     <RootNamespace>Store_CRUD_MVC</RootNamespace>
     <UserSecretsId>f1f92fa4-19c8-4437-9abf-c99dd5130ef6</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
